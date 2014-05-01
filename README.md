@@ -1,0 +1,3 @@
+Hi, 
+please be EXTREMELY careful with those things, especially the ssl stuff since it can break your config ... 
+Things will be documented in the wiki over time 
