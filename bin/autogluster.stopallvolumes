@@ -1,0 +1,4 @@
+#!/bin/bash
+gluster=$(which gluster)
+
+for VOL in $(gluster volume list);do echo y|gluster volume stop $VOL ;done;echo

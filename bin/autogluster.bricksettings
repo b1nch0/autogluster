@@ -1,0 +1,33 @@
+#!/bin/bash
+##RTFM
+##RTFM AGAIN 
+##RTFM AGAIN AGAIN
+##VERIFY PARAMS !
+VOLUM=$1
+gluster=/usr/sbin/gluster
+
+#########
+###SAMPLE SETUP
+#VOLUM=gv0
+#PTH[0]=host1.domain.org:/export/gv0-brick
+#PTH[1]=host2.domain.org:/export/gv0-brick
+#PTH[2]=host3.domain.org:/export/gv0-brick
+#$gluster volume create ${VOLUM} replica 2 ${PTH[*]} 
+
+$gluster volume start ${VOLUM} ;
+$gluster volume set ${VOLUM} performance.write-behind-window-size 128MB ;
+$gluster volume set ${VOLUM} performance.least-prio-threads 2 ; 
+$gluster volume set ${VOLUM} performance.low-prio-threads 3; 
+$gluster volume set ${VOLUM} performance.io-thread-count 2 ; 
+$gluster volume set ${VOLUM} performance.cache-size 256MB; 
+$gluster volume set ${VOLUM} performance.cache-refresh-timeout 60;
+$gluster volume set ${VOLUM} performance.cache-max-file-size 64MB ;
+#$gluster volume set ${VOLUM} transport.socket.own-thread on;
+$gluster volume set ${VOLUM} client.ssl on
+$gluster volume set ${VOLUM} server.ssl on
+echo y |  $gluster volume stop ${VOLUM} ;
+$gluster volume start ${VOLUM} ;
+######dont forget to cat  all /etc/glusterfs.pem into ANY /etc/glusterfs.ca (clients need to have the server )
+##to verify
+$gluster volume info ${VOLUM}|grep -e ${VOLUM} -e performance -e ssl
+
